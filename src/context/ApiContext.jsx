@@ -17,9 +17,10 @@ export const ApiProvider = ({children}) => {
           
         getImages()
 
-    }, [])
+    },[])
 
     return (
         <ApiContext.Provider value={{images}}>{children}</ApiContext.Provider>
     )
 };
+
