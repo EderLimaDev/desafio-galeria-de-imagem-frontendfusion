@@ -1,6 +1,8 @@
 import { Card } from "./components/Card/Card";
 import { useContext, useEffect, useState } from "react";
 import { ApiContext } from "./context/ApiContext";
+import { Link } from 'react-router-dom';
+
 
 function App() {
   const { images } = useContext(ApiContext);
@@ -31,7 +33,9 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if(favoriteImages.length > 0) {
     localStorage.setItem("favoriteImages", JSON.stringify(favoriteImages));
+    }
   }, [favoriteImages]);
 
   const toggleFavorite = (download_url) => {
@@ -46,6 +50,7 @@ function App() {
   
   return (
     <>
+    
       <main>
         <header className="w-full my-4 flex flex-col justify-center items-center h-28 text-red-400">
           <h1 className="text-3xl text-center">
@@ -57,7 +62,12 @@ function App() {
         </header>
 
         <div className="relative flex justify-center p-8">
-          <button className="absolute left-0 pl-8">Favoritos</button>
+
+          <Link to="/favorites" className="border-2 mb-4 ml-8 absolute left-0 p-3 rounded-lg text-white-500 font-bold hover:bg-green-600">
+            <span className="md:inline hidden">Favoritos </span>
+            <i className='bx bxs-star text-yellow-400'></i>
+          </Link>
+     
           <select
             value={selectedValue}
             onChange={handleChangeSearch}
@@ -86,6 +96,7 @@ function App() {
                   height={image.height}
                   download_url={image.download_url}
                   isOpen={openCardIndex === image.id}
+                  isFavorite={favoriteImages.includes(image.download_url)}
                   onCardClick={() => handleCardClick(image.id)}
                   onFavoriteToggle={() => toggleFavorite(image.download_url)}
                 />
@@ -96,7 +107,9 @@ function App() {
           )}
         </section>
       </main>
+     
     </>
+        
   );
 }
 
